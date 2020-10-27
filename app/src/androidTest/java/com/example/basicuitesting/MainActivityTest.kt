@@ -1,36 +1,64 @@
 package com.example.basicuitesting
 
+import android.app.Activity.RESULT_OK
+import android.app.Instrumentation.ActivityResult
+import android.content.ContentResolver
+import android.content.Intent
+import android.content.res.Resources
+import android.net.Uri
+import android.provider.MediaStore
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.matcher.IntentMatchers
+import androidx.test.espresso.intent.matcher.IntentMatchers.*
+import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.platform.app.InstrumentationRegistry
+import com.bumptech.glide.load.engine.Resource
 import com.example.basicuitesting.ui.movie.MainActivity
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
+import org.junit.Rule
 import org.junit.Test
 
 //@RunWith(AndroidJUnit4ClassRunner::class)
 class MainActivityTest {
 
+    @get:Rule
+    val intentsTestRule = IntentsTestRule(MainActivity::class.java)
 
-/*    @Test
-    fun testActivity_InView() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-
-        onView(withId(R.id.main)).check(matches(isDisplayed()))
-    }
 
     @Test
-    fun test_navToSecondaryActivity() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-        //mainActivity
-        onView(withId(R.id.main)).check(matches(isDisplayed()))
-        onView(withId(R.id.button_next_activity)).perform(click())
-        //secondary activity
-        onView(withId(R.id.secondary)).check(matches(isDisplayed()))
+    fun test_validateIntentSentToPickPackage() {
+        //GIVEN
+        val expectedIntent: Matcher<Intent> = allOf(
+            hasAction(Intent.ACTION_PICK),
+            hasData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        )
 
-        pressBack()
-        //mainActivity
-        onView(withId(R.id.main)).check(matches(isDisplayed()))
-    }*/
+        val activityResult = createGalleryPickActivityResultStub()
+        intending(expectedIntent).respondWith(activityResult)
+
+        //execute and verify
+        onView(withId(R.id.button_open_gallery)).perform(click())
+        intending(expectedIntent)
+    }
+
+    private fun createGalleryPickActivityResultStub(): ActivityResult {
+        val resources: Resources = InstrumentationRegistry.getInstrumentation()
+            .context.resources
+        val imageUri = Uri.parse(
+            ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                    resources.getResourcePackageName(R.drawable.ic_launcher_background) + "/" +
+                    resources.getResourceTypeName(R.drawable.ic_launcher_background) + "/" +
+                    resources.getResourceEntryName(R.drawable.ic_launcher_background)
+        )
+        val resultIntent = Intent()
+        resultIntent.data = imageUri
+        return ActivityResult(RESULT_OK, resultIntent)
+    }
 }
