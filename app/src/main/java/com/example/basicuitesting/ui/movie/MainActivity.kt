@@ -2,6 +2,7 @@ package com.example.basicuitesting.ui.movie
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -11,15 +12,15 @@ import com.example.basicuitesting.R
 import com.example.basicuitesting.factory.MovieFragmentFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
-const val GALLERY_REQUEST_CODE = 6742
+const val REQUEST_IMAGE_CAPTURE = 6742
 private const val TAG = "MainActivity"
-
+const val KEY_IMAGE_DATA = "data"
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        button_open_gallery.setOnClickListener {
-            pickFromGallery()
+        button_open_camera.setOnClickListener {
+            dispatchCameraIntent()
         }
     }
 
@@ -28,20 +29,24 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             Log.d(TAG, "onActivityResult: RESULT OK")
             when (requestCode) {
-                GALLERY_REQUEST_CODE -> {
-                    data?.data?.let { uri ->
-                        Log.d(TAG, "onActivityResult: URI: $uri")
-                        Glide.with(this)
-                            .load(uri)
-                            .into(image)
+                REQUEST_IMAGE_CAPTURE -> {
+                    Log.d(TAG, "onActivityResult: testing01 called")
+                    data?.extras.let { extras ->
+                        if (extras == null || !extras.containsKey(KEY_IMAGE_DATA)) {
+                            Log.d(TAG, "onActivityResult: testing01 called didint path")
+                            return
+                        }
+                        Log.d(TAG, "onActivityResult: testing01 called path")
+
+                        val imageBitmap = extras[KEY_IMAGE_DATA] as Bitmap?
+                        image.setImageBitmap(imageBitmap)
                     }
                 }
             }
         }
     }
-
-    private fun pickFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+    private fun dispatchCameraIntent() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
     }
 }

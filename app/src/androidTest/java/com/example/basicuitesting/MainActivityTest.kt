@@ -2,26 +2,22 @@ package com.example.basicuitesting
 
 import android.app.Activity.RESULT_OK
 import android.app.Instrumentation.ActivityResult
-import android.content.ContentResolver
 import android.content.Intent
-import android.content.res.Resources
-import android.net.Uri
+import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.provider.MediaStore
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.intending
-import androidx.test.espresso.intent.matcher.IntentMatchers
-import androidx.test.espresso.intent.matcher.IntentMatchers.*
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.platform.app.InstrumentationRegistry
-import com.bumptech.glide.load.engine.Resource
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import com.example.basicuitesting.ui.ImageViewHasDrawableMatcher.hasDrawable
+import com.example.basicuitesting.ui.movie.KEY_IMAGE_DATA
 import com.example.basicuitesting.ui.movie.MainActivity
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
 
@@ -35,30 +31,29 @@ class MainActivityTest {
     @Test
     fun test_validateIntentSentToPickPackage() {
         //GIVEN
-        val expectedIntent: Matcher<Intent> = allOf(
-            hasAction(Intent.ACTION_PICK),
-            hasData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        )
-
+        val expectedIntent: Matcher<Intent> =
+            hasAction(MediaStore.ACTION_IMAGE_CAPTURE)
         val activityResult = createGalleryPickActivityResultStub()
         intending(expectedIntent).respondWith(activityResult)
 
         //execute and verify
-        onView(withId(R.id.button_open_gallery)).perform(click())
+        onView(withId(R.id.image)).check(matches(not(hasDrawable())))
+        onView(withId(R.id.button_open_camera)).perform(click())
         intending(expectedIntent)
+        onView(withId(R.id.image)).check(matches(hasDrawable()))
     }
 
     private fun createGalleryPickActivityResultStub(): ActivityResult {
-        val resources: Resources = InstrumentationRegistry.getInstrumentation()
-            .context.resources
-        val imageUri = Uri.parse(
-            ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-                    resources.getResourcePackageName(R.drawable.ic_launcher_background) + "/" +
-                    resources.getResourceTypeName(R.drawable.ic_launcher_background) + "/" +
-                    resources.getResourceEntryName(R.drawable.ic_launcher_background)
+        val bundle = Bundle()
+        bundle.putParcelable(
+            KEY_IMAGE_DATA,
+            BitmapFactory.decodeResource(
+                intentsTestRule.activity.resources,
+                R.drawable.ic_launcher_background
+            )
         )
         val resultIntent = Intent()
-        resultIntent.data = imageUri
+        resultIntent.putExtras(bundle)
         return ActivityResult(RESULT_OK, resultIntent)
     }
 }
