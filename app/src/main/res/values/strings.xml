@@ -29,5 +29,8 @@
     <string name="text_star_actors">Star Actors:</string>
     <string name="text_select_image_from_gallery">select image from gallery</string>
     <string name="text_launch_camera">Launch Camera</string>
+    <string name="text_launch_dialog">launch dialog</string>
+    <string name="ok">ok</string>
+    <string name="text_enter_you_name">Enter your name</string>
 
 </resources>
