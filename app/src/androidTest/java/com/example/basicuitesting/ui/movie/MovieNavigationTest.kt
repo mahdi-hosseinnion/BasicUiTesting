@@ -10,7 +10,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.example.basicuitesting.R
 import kotlinx.android.synthetic.main.fragment_movie_detail.view.*
 import org.junit.Test
-
 class MovieNavigationTest {
 
     @Test

@@ -4,7 +4,7 @@ import com.example.basicuitesting.data.DummyMovies.INFINITY_WAR
 import com.example.basicuitesting.data.DummyMovies.THE_RUNDOWN
 import com.example.basicuitesting.data.Movie
 
-object MovieRemoteDataSource : MoviesDataSource {
+class  MovieRemoteDataSource : MoviesDataSource {
 
     private var MOVIES_REMOTE_DATA = LinkedHashMap<Int, Movie>(2)
 
