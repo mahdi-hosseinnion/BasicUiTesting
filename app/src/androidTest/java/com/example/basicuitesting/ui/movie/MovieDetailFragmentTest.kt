@@ -40,7 +40,7 @@ class MovieDetailFragmentTest {
         every {
             moviesDataSource.getMovie(movie_id)
         } returns (movie)
-//
+
         val requestOptions = RequestOptions()
             .placeholder(R.drawable.ic_launcher_background)
             .error(R.drawable.ic_launcher_background)
