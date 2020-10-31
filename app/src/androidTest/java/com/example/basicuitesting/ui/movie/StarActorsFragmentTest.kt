@@ -32,7 +32,7 @@ class StarActorsFragmentTest{
             .check(
                 ViewAssertions.matches(
                     ViewMatchers.withText(
-                        StarActorsFragment.stringBuilderForDirectors(
+                        StarActorsFragment.stringBuilderForStarActors(
                             bundleData
                         )
                     )

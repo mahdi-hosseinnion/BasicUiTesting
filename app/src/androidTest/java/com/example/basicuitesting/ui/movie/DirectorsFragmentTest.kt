@@ -8,7 +8,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.basicuitesting.R
-import com.example.basicuitesting.data.DummyMovies.THE_RUNDOWN
 import com.example.basicuitesting.factory.MovieFragmentFactory
 import kotlinx.android.synthetic.main.fragment_directors.*
 import org.junit.Assert.*

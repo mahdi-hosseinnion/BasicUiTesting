@@ -6,6 +6,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.basicuitesting.data.source.MoviesDataSource
 import com.example.basicuitesting.ui.movie.DirectorsFragment
 import com.example.basicuitesting.ui.movie.MovieDetailFragment
+import com.example.basicuitesting.ui.movie.MovieListFragment
 import com.example.basicuitesting.ui.movie.StarActorsFragment
 
 class MovieFragmentFactory
@@ -27,6 +28,12 @@ constructor(
                     super.instantiate(classLoader, className)
                 }
             }
+            MovieListFragment::class.java.name ->
+                if (movieDataSource != null) {
+                    MovieListFragment(movieDataSource)
+                } else {
+                    super.instantiate(classLoader, className)
+                }
             StarActorsFragment::class.java.name -> StarActorsFragment()
             else -> super.instantiate(classLoader, className)
         }

@@ -6,22 +6,14 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import androidx.test.runner.AndroidJUnitRunner
 import com.bumptech.glide.request.RequestOptions
 import com.example.basicuitesting.R
-import com.example.basicuitesting.data.DummyMovies.THE_RUNDOWN
-import com.example.basicuitesting.data.Movie
-import com.example.basicuitesting.data.source.MovieRemoteDataSource
+import com.example.basicuitesting.data.DummyMovies
 import com.example.basicuitesting.data.source.MoviesDataSource
 import com.example.basicuitesting.factory.MovieFragmentFactory
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.android.synthetic.main.fragment_movie_detail.*
-import org.junit.Assert.*
 import org.junit.Test
-import org.junit.runner.RunWith
 
 
 //@RunWith(AndroidJUnit4ClassRunner::class)
@@ -31,9 +23,9 @@ class MovieDetailFragmentTest {
     fun test_isMovieDataVisible() {
         //GIVEN
         val movie_id = 1
-        val title = THE_RUNDOWN.title
-        val description = THE_RUNDOWN.description
-        val movie = THE_RUNDOWN
+        val title = DummyMovies.movies[1].title
+        val description = DummyMovies.movies[1].description
+        val movie = DummyMovies.movies[1]
         //note main project
         //mock
         val moviesDataSource = mockk<MoviesDataSource>()

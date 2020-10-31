@@ -25,11 +25,11 @@ class StarActorsFragment : Fragment(R.layout.fragment_star_actors) {
     }
 
     private fun setStarActors() {
-        star_actors_text.text = stringBuilderForDirectors(_StarActors)
+        star_actors_text.text = stringBuilderForStarActors(_StarActors)
     }
 
     companion object {
-        fun stringBuilderForDirectors(actors: ArrayList<String>): String {
+        fun stringBuilderForStarActors(actors: ArrayList<String>): String {
             val sb = StringBuilder()
             for (actor in actors) {
                 sb.append(actor + "\n")
