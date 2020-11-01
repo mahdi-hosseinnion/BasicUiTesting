@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.basicuitesting.R
 import com.example.basicuitesting.data.Movie
+import com.example.basicuitesting.util.EspressoIdlingResource
 import kotlinx.android.synthetic.main.fragment_movie_detail.view.*
 import kotlinx.android.synthetic.main.fragment_movie_detail.view.movie_image
 import kotlinx.android.synthetic.main.fragment_movie_detail.view.movie_star_actors
@@ -56,7 +57,11 @@ class MoviesListAdapter (private val interaction: Interaction? = null) :
     }
 
     fun submitList(list: List<Movie>) {
-        differ.submitList(list)
+        EspressoIdlingResource.increment()
+        val commitCallback= Runnable {
+            EspressoIdlingResource.decrement()
+        }
+        differ.submitList(list,commitCallback)
     }
 
     class MovieViewHolder

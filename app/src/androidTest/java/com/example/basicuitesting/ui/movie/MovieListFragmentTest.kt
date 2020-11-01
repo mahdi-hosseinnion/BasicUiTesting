@@ -2,6 +2,7 @@ package com.example.basicuitesting.ui.movie
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -11,8 +12,9 @@ import com.example.basicuitesting.R
 import com.example.basicuitesting.data.DummyMovies
 import com.example.basicuitesting.ui.movie.DirectorsFragment.Companion.stringBuilderForDirectors
 import com.example.basicuitesting.ui.movie.StarActorsFragment.Companion.stringBuilderForStarActors
-import kotlinx.android.synthetic.main.fragment_movie_list.view.*
-import org.junit.Assert.*
+import com.example.basicuitesting.util.EspressoIdlingResource
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,6 +22,16 @@ class MovieListFragmentTest {
 
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
+
+    @Before
+    fun registerIdlingResource(){
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+    }
+    @After
+    fun unregisterIdlingResource(){
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+    }
+
 
     val LIST_ITEM_IN_TEST = 4
     val MOVIE_TEST = DummyMovies.movies[LIST_ITEM_IN_TEST]
