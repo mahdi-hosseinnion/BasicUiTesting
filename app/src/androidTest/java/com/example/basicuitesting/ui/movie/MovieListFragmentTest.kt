@@ -13,6 +13,7 @@ import com.example.basicuitesting.data.DummyMovies
 import com.example.basicuitesting.ui.movie.DirectorsFragment.Companion.stringBuilderForDirectors
 import com.example.basicuitesting.ui.movie.StarActorsFragment.Companion.stringBuilderForStarActors
 import com.example.basicuitesting.util.EspressoIdlingResource
+import com.example.basicuitesting.util.EspressoIdlingResourceRule
 import org.junit.*
 import org.junit.runners.MethodSorters
 
@@ -22,16 +23,8 @@ class MovieListFragmentTest {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
-    @Before
-    fun registerIdlingResource() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
-    }
-
-    @After
-    fun unregisterIdlingResource() {
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
-    }
-
+    @get:Rule
+    val espressoIdlingResourceRule = EspressoIdlingResourceRule()
 
     val LIST_ITEM_IN_TEST = 4
     val MOVIE_TEST = DummyMovies.movies[LIST_ITEM_IN_TEST]
