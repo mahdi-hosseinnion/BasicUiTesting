@@ -13,22 +13,22 @@ import com.example.basicuitesting.data.DummyMovies
 import com.example.basicuitesting.ui.movie.DirectorsFragment.Companion.stringBuilderForDirectors
 import com.example.basicuitesting.ui.movie.StarActorsFragment.Companion.stringBuilderForStarActors
 import com.example.basicuitesting.util.EspressoIdlingResource
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
+import org.junit.runners.MethodSorters
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class MovieListFragmentTest {
 
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
-    fun registerIdlingResource(){
+    fun registerIdlingResource() {
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
     }
+
     @After
-    fun unregisterIdlingResource(){
+    fun unregisterIdlingResource() {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
 
@@ -40,7 +40,7 @@ class MovieListFragmentTest {
         recyclerView comes into view
      */
     @Test
-    fun test_recyclerView_isDisplayed() {
+    fun a_test_recyclerView_isDisplayed() {
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
     }
 
